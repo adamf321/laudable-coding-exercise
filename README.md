@@ -20,11 +20,12 @@ Feel free to reach out if there are any questions!
 ## Requirements
 
 In the Laudable product, we have videos or calls with **transcripts**. We then take those and create **clips** -
-essentially small portions of those videos focused on a single speakerp.
+essentially small portions of those videos focused on a single speaker.
 
 We've provided a mock database with a single call transcript in it, and a repository to access that data (see
 `models.ts` for documentation on the data provided). Given this, we would like you to design a simplified backend
-for an application that supports the following use cases:
+for an application that supports the following use cases. You are welcome to create either a REST backend or simply
+just implement the relevant service methods - it is up to you.
 
 ### 1. Conversation Data 
 We eventually want to display this transcript data in a frontend as a human-readable "conversation", similar to:
