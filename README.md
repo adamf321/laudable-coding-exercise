@@ -8,12 +8,13 @@ or two to complete.
 
 ## Instructions
 
-Fork this repo, and implement the service requirements articulated below in `service.ts`. You are welcome to add
+Fork or clone this repo, and implement the service requirements articulated below in `service.ts`. You are welcome to add
 additional file(s) if helpful and you can use either Typescript or vanilla Javascript.
 
 Jest has been set up for you if you would like to make use of it.
 
-Once done, you can push your work to Gitlab or Github and provide a link to your Laudable contact(s).
+Once done, you can either push your work to Gitlab or Github and provide a link, or submit a merge request to this
+repository with your name.
 
 Feel free to reach out if there are any questions!
 
