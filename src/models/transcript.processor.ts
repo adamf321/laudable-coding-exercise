@@ -23,9 +23,9 @@ export class TranscriptProcessor {
     const conversation: Conversation = [];
 
     for (const [index, word] of words.entries()) {
-      const lastSegment = conversation.length ? conversation[conversation.length - 1] : null;
+      const lastQuote = conversation.length ? conversation[conversation.length - 1] : null;
 
-      if (!lastSegment || word.speaker !== lastSegment.speakerId) {
+      if (!lastQuote || word.speaker !== lastQuote.speakerId) {
         const speaker = this.transcript.speakers.find(s => s.id === word.speaker);
 
         conversation.push({
