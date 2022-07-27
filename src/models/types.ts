@@ -16,3 +16,10 @@ export type Word = {
   startTime: number; // The start time (in seconds since the start of the call) of this word
   endTime: number; // The end time (in seconds since the start of the call) of this word
 }
+
+export type Conversation = { // Ordered list of conversation segments
+  timestamp: string; // The timestamp of the quote in m:ss
+  speakerId: number; // The ID of the speaker who said this quote
+  speakerName: string; // The name of the speaker who said this quote
+  quote: string; // The quote
+}[];

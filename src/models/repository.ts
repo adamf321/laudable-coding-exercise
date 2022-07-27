@@ -1,5 +1,5 @@
-import {Transcript} from "./models";
-import {TRANSCRIPT} from "./db";
+import { Transcript } from "./types.js";
+import { TRANSCRIPT } from "../db.js";
 
 export class TranscriptRepository {
 

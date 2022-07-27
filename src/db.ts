@@ -1,4 +1,4 @@
-import {Speaker, Transcript, Word} from "./models";
+import {Speaker, Transcript, Word} from "./models/types.js";
 
 const SPEAKERS: Speaker[] = [
   { id: 0, name: "Flavius" },
