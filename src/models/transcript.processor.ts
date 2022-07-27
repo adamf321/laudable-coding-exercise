@@ -28,6 +28,8 @@ export class TranscriptProcessor {
       if (!lastQuote || word.speaker !== lastQuote.speakerId) {
         const speaker = this.transcript.speakers.find(s => s.id === word.speaker);
 
+        if (!speaker) throw new Error(`Speaker ${word.speaker} was not found in this transcript`)
+
         conversation.push({
           timestamp: toMinutesSeconds(word.startTime),
           speakerId: speaker.id,
@@ -48,5 +50,9 @@ export class TranscriptProcessor {
    * Returns the full word with punctuation (the words array strips out punctuation so we use this to get it back)
    * @param index The index of the word in the full text of the transcript
    */
-  private getWordWithPunctuation = (index: number): string => this.fullTextWordArray[index];
+  private getWordWithPunctuation = (index: number): string => {
+    const word = this.fullTextWordArray[index];
+    if (!word) throw new Error(`Word at index ${index} not found in the fullText of this transcript`);
+    return word;
+  }
 }
