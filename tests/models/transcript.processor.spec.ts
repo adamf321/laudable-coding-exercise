@@ -1,4 +1,4 @@
-import { TranscriptProcessor } from "../../src/models/transcript.processor";
+import { TranscriptProcessor } from "../../src/domain/transcript.processor";
 
 const VIDEO_URL = "https://www.youtube.com/watch?v=mQQh115qAME";
 

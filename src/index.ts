@@ -1,6 +1,5 @@
 import express, { Express, Response, Request } from "express";
-import { TranscriptProcessor } from "./models/transcript.processor.js";
-import { TranscriptRepository } from "./models/repository.js";
+import { Service } from "./domain/service.js";
 
 const app: Express = express();
 const port = 3001;
@@ -10,10 +9,12 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.get("/conversation", (req: Request, res: Response) => {
-  const transcript = TranscriptRepository.getTranscript();
-  const tp = new TranscriptProcessor(transcript);
+  const service = new Service();
+  const videoUrl = req.query.media_url;
 
-  res.json(tp.getConversation());
+  if (!videoUrl || typeof videoUrl !== "string") throw new Error("media_url is a required parameter");
+
+  res.json(service.getConversation(videoUrl));
 });
 
 app.listen(port, () => {
