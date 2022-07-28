@@ -7,7 +7,7 @@ import { Clip } from "./types.js";
  */
 export class Service {
   /**
-   * Get a full conversation transcript
+   * Get a full conversation transcript (a conversation is all the clips from a transcript)
    * @param videoUrl The URL of the video
    */
   getConversation(videoUrl: string): Clip[] {

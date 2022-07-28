@@ -1,22 +1,60 @@
 # Laudable Coding Exercise
+This repo contains an app which creates REST endpoints for media (audio or video) transcripts.
 
-Thanks for taking the time to interview with Laudable - we appreciate the time you're putting into working on this
-exercise!
+## Overview
+The app is written in TypeScript using the ExpressJS framework. When running it exposes the following endpoints at `http://localhost:3001/`:
 
-This exercise is intended to reflect some real problems we have solved and is intended to take only an hour
-or two to complete.
+- `/`: Output test text to validate the server is running.
+- `/conversation?media_url=https://www.youtube.com/watch?v=mQQh115qAME`: Outputs a conversation for the hardcoded transcript stored in the app.
+- `/clips?media_url=https://www.youtube.com/watch?v=mQQh115qAME&start_time=20&end_time=75`: Outputs a clip of a conversation for the transcript.
 
-## Instructions
+### Design
+The app's business domain logic is in the `/src/domain` folder, which represents pure business logic. It is exposed to consumers via `service.ts`.
 
-Fork or clone this repo, and implement the service requirements articulated below in `service.ts`. You are welcome to add
-additional file(s) if helpful and you can use either Typescript or vanilla Javascript.
+`/src/utils` contains utilities which are not core business logic, e.g. time manipulation functions and the mock database.
 
-Jest has been set up for you if you would like to make use of it.
+The `index.ts` file creates the endpoints and includes some logic which is specific to the API's representation of the data.
 
-Once done, you can either push your work to Gitlab or Github and provide a link, or submit a merge request to this
-repository with your name.
+**Conversation Endpoint**
 
-Feel free to reach out if there are any questions!
+This endpoint exposes the full transcript in conversation format. Each time the speaker changes a new quote item is included in the conversation.
+
+**Clips Endpoint**
+
+The `/clips` endpoint returns a set of clips that fall within the given time range. It includes full words which are partially included in the given start and end time. E.g. if the clip starts at 20.3s and there is word starting at 20.0 and ending at 21.0, then we include the full word. Likewise for  words partially cut off at the end of the clip.
+
+It was decided to implement the endpoint in this way because:
+
+- This provides what is probably the most useful output (without knowing the business use case it is hard to say though!).
+- Has a consistent format with the `/conversation` endpoint.
+
+
+## Local Development
+Prequesites:
+
+1. Node v14.
+
+To set-up the app locally:
+
+1. Clone this repo.
+2. Run `npm i` to install dependencies.
+3. Run `npm run dev` to start the app. It will automatically reload as you make changes.
+4. Go to `http://localhost:3001` and verify you can see the test message.
+
+
+## Additional Notes
+The following assumptions where made when building this app:
+
+- Transcripts do not have overlapping words (e.g. 2 people speaking at once). This could be a case to consider in a future iteration.
+
+Given more time the app could be improved by:
+
+- Higher level tests, e.g. contract or full e2e.
+- Allow for processing of large transcripts, e.g. by using a more efficient search algorithm for finding the words in a clip.
+- Add authentication to the endpoints.
+- Swagger documentation for the endpoints (could be auto-generated from the TypeScript definitions).
+- Improved dev tooling, e.g. linting
+- Improved error handling for the API response (e.g. show appropriate messages depending on whether there is a user or server error)
 
 ## Requirements
 

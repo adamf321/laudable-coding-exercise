@@ -13,7 +13,7 @@ export class TranscriptProcessor {
   }
 
   /**
-   * Get the transcript in conversation format
+   * Get the clips for this transcript
    * @param start Start getting the conversation from this point (in seconds)
    * @param end   Stop getting the conversation beyond this point (in seconds)
    */
@@ -35,7 +35,7 @@ export class TranscriptProcessor {
 
       const lastQuote = clips.length ? clips[clips.length - 1] : null;
 
-      if (!lastQuote || word.speaker !== lastQuote.speakerId) {
+      if (!lastQuote || word.speaker !== lastQuote.speakerId) { // Start a new clip if the conditions are met
         const speaker = this.transcript.speakers.find(s => s.id === word.speaker);
 
         if (!speaker) throw new Error(`Speaker ${word.speaker} was not found in this transcript`)

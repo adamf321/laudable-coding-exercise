@@ -18,9 +18,9 @@ export type Word = {
 }
 
 export type Clip = {
-  startTime: number; // The timestamp of the quote in m:ss
-  endTime: number; // The timestamp of the quote in m:ss
-  speakerId: number; // The ID of the speaker who said this quote
-  speakerName: string; // The name of the speaker who said this quote
-  quote: string; // The quote
+  startTime: number; // The time this clip starts, as an offset in seconds
+  endTime: number; // The time this clip ends, as an offset in seconds
+  speakerId: number; // The ID of the speaker
+  speakerName: string; // The name of the speaker
+  quote: string; // What they said
 };

@@ -2,12 +2,16 @@ import { Clip } from "../domain/types.js";
 import { toMinutesSeconds } from "./time.utils.js";
 
 type ApiClip = {
-  timestamp: string;
-  range: string;
+  timestamp: string; // Start time in m:ss format
+  range: string; // start and end time in mm:ss-m:ss format
   speaker_name: string;
   quote: string;
 }
 
+/**
+ * Convert an array of clips into an array of api formatted clips
+ * @param conversation 
+ */
 export function getFormattedClips(conversation: Clip[]): ApiClip[] {
   return conversation.map((c: Clip) => ({
     timestamp: toMinutesSeconds(c.startTime),
