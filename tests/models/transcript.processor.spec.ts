@@ -2,7 +2,7 @@ import { TranscriptProcessor } from "../../src/domain/transcript.processor";
 
 const VIDEO_URL = "https://www.youtube.com/watch?v=mQQh115qAME";
 
-describe("get conversation", () => {
+describe("get full conversation", () => {
   test("for empty transcript", () => {
     const tp = new TranscriptProcessor({
       videoUrl: VIDEO_URL,
@@ -204,6 +204,177 @@ describe("get conversation", () => {
       },
     ]);
   });
+
+  test("for non-integer times", () => {
+    const tp = new TranscriptProcessor({
+      videoUrl: VIDEO_URL,
+      speakers: [{ id: 0, name: "Flavius" }],
+      fullText: "Hello world",
+      words: [
+        {
+          value: "Hello",
+          speaker: 0,
+          startTime: 0.568,
+          endTime: 1.67
+        },
+        {
+          value: "world",
+          speaker: 0,
+          startTime: 1.67,
+          endTime: 2.4678
+        },
+      ],
+    });
+
+    expect(tp.getConversation()).toEqual([{
+      timestamp: "0:00.568",
+      speakerId: 0,
+      speakerName: "Flavius",
+      quote: "Hello world",
+    }]);
+  });
+});
+
+describe("get partial conversation", () => {
+  test("when truncating the end", () => {
+    const tp = new TranscriptProcessor({
+      videoUrl: VIDEO_URL,
+      speakers: [{ id: 0, name: "Flavius" }],
+      fullText: "Hello world",
+      words: [
+        {
+          value: "Hello",
+          speaker: 0,
+          startTime: 0.568,
+          endTime: 1.67
+        },
+        {
+          value: "world",
+          speaker: 0,
+          startTime: 1.67,
+          endTime: 2.4678
+        },
+      ],
+    });
+
+    expect(tp.getConversation(0, 1.5)).toEqual([{
+      timestamp: "0:00.568",
+      speakerId: 0,
+      speakerName: "Flavius",
+      quote: "Hello",
+    }]);
+  });
+
+  test("when truncating the beginning", () => {
+    const tp = new TranscriptProcessor({
+      videoUrl: VIDEO_URL,
+      speakers: [{ id: 0, name: "Flavius" }],
+      fullText: "Hello world",
+      words: [
+        {
+          value: "Hello",
+          speaker: 0,
+          startTime: 0.568,
+          endTime: 1.67
+        },
+        {
+          value: "world",
+          speaker: 0,
+          startTime: 1.8,
+          endTime: 2.4678
+        },
+      ],
+    });
+
+    expect(tp.getConversation(1.7)).toEqual([{
+      timestamp: "0:01.8",
+      speakerId: 0,
+      speakerName: "Flavius",
+      quote: "world",
+    }]);
+  });
+
+  test("when starting from the middle of a word", () => {
+    const tp = new TranscriptProcessor({
+      videoUrl: VIDEO_URL,
+      speakers: [{ id: 0, name: "Flavius" }],
+      fullText: "Hello world",
+      words: [
+        {
+          value: "Hello",
+          speaker: 0,
+          startTime: 0.5,
+          endTime: 1.67
+        },
+        {
+          value: "world",
+          speaker: 0,
+          startTime: 1.8,
+          endTime: 2.4678
+        },
+      ],
+    });
+
+    expect(tp.getConversation(1)).toEqual([{
+      timestamp: "0:00.5",
+      speakerId: 0,
+      speakerName: "Flavius",
+      quote: "Hello world",
+    }]);
+  });
+
+  test("when ending in the middle of a word", () => {
+    const tp = new TranscriptProcessor({
+      videoUrl: VIDEO_URL,
+      speakers: [{ id: 0, name: "Flavius" }],
+      fullText: "Hello world",
+      words: [
+        {
+          value: "Hello",
+          speaker: 0,
+          startTime: 0.5,
+          endTime: 1.67
+        },
+        {
+          value: "world",
+          speaker: 0,
+          startTime: 1.8,
+          endTime: 2.4678
+        },
+      ],
+    });
+
+    expect(tp.getConversation(0, 2.4)).toEqual([{
+      timestamp: "0:00.5",
+      speakerId: 0,
+      speakerName: "Flavius",
+      quote: "Hello world",
+    }]);
+  });
+
+  test("when start and end are out of bounds", () => {
+    const tp = new TranscriptProcessor({
+      videoUrl: VIDEO_URL,
+      speakers: [{ id: 0, name: "Flavius" }],
+      fullText: "Hello world",
+      words: [
+        {
+          value: "Hello",
+          speaker: 0,
+          startTime: 0.5,
+          endTime: 1.67
+        },
+        {
+          value: "world",
+          speaker: 0,
+          startTime: 1.8,
+          endTime: 2.4678
+        },
+      ],
+    });
+
+    expect(tp.getConversation(3, 5)).toEqual([]);
+  });
 });
 
 describe("fails to get conversation", () => {
@@ -223,7 +394,7 @@ describe("fails to get conversation", () => {
     expect(() => tp.getConversation()).toThrow();
   });
 
-  test("when start time is not an integer", () => {
+  test("when start time is after end time", () => {
     const tp = new TranscriptProcessor({
       videoUrl: VIDEO_URL,
       speakers: [{ id: 0, name: "Flavius" }],
@@ -231,8 +402,8 @@ describe("fails to get conversation", () => {
       words: [{
         value: "Hello",
         speaker: 0,
-        startTime: 0.5,
-        endTime: 1
+        startTime: 1,
+        endTime: 0
       }],
     });
 

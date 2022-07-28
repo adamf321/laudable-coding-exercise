@@ -25,11 +25,19 @@ describe("Converts seconds to m:ss", () => {
     expect(toMinutesSeconds(600)).toEqual("10:00");
   });
 
-  test("fails for negative seconds", () => {
-    expect(() => toMinutesSeconds(-1)).toThrow();
+  test("for non-integer seconds less than 10", () => {
+    expect(toMinutesSeconds(1.96)).toEqual("0:01.96");
   });
 
-  test("fails for decimal seconds", () => {
-    expect(() => toMinutesSeconds(1.8)).toThrow();
+  test("for non-integer seconds greater than 10", () => {
+    expect(toMinutesSeconds(21.96)).toEqual("0:21.96");
+  });
+
+  test("for many decimal places", () => {
+    expect(toMinutesSeconds(21.96758493)).toEqual("0:21.97");
+  });
+
+  test("fails for negative seconds", () => {
+    expect(() => toMinutesSeconds(-1)).toThrow();
   });
 });

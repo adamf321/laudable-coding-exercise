@@ -15,14 +15,25 @@ export class TranscriptProcessor {
 
   /**
    * Get the transcript in conversation format
+   * @param start Start getting the conversation from this point (in seconds)
+   * @param end   Stop getting the conversation beyond this point (in seconds)
    */
-  getConversation = (): Conversation => {
+  getConversation = (startTime: number = 0, endTime: number = Infinity): Conversation => {
     // Sort the words by timestamp in case they are not already ordered (if we can assume they are then this step could be removed)
     const words = this.transcript.words.sort((a, b) => a.startTime - b.startTime);
 
     const conversation: Conversation = [];
 
     for (const [index, word] of words.entries()) {
+      // Check for invalid words
+      if (word.startTime < 0 || word.endTime < word.startTime) throw new Error(`${word} has invalid start/end time`);
+
+      // Skip words that end before the startTime
+      if (word.endTime < startTime) continue;
+
+      // Exit the loop if the word starts after the endTime (all subsequent words will also start after the endTime)
+      if (word.startTime > endTime) break;
+
       const lastQuote = conversation.length ? conversation[conversation.length - 1] : null;
 
       if (!lastQuote || word.speaker !== lastQuote.speakerId) {
