@@ -17,7 +17,7 @@ The `index.ts` file creates the endpoints and includes some logic which is speci
 
 **Conversation Endpoint**
 
-This endpoint exposes the full transcript in conversation format. Each time the speaker changes a new quote item is included in the conversation.
+This endpoint exposes the full transcript in conversation format. Each time the speaker changes a new clip is included in the conversation.
 
 **Clips Endpoint**
 
@@ -25,12 +25,12 @@ The `/clips` endpoint returns a set of clips that fall within the given time ran
 
 It was decided to implement the endpoint in this way because:
 
-- This provides what is probably the most useful output (without knowing the business use case it is hard to say though!).
+- This provides what is probably the most useful output (without knowing the business use case it is hard to say though!) as it provides all the clips within the range for the consumer to pick from.
 - Has a consistent format with the `/conversation` endpoint.
 
 
 ## Local Development
-Prequesites:
+Prerequesites:
 
 1. Node v14.
 
@@ -40,6 +40,7 @@ To set-up the app locally:
 2. Run `npm i` to install dependencies.
 3. Run `npm run dev` to start the app. It will automatically reload as you make changes.
 4. Go to `http://localhost:3001` and verify you can see the test message.
+5. Run `npm t` to run the test suite.
 
 
 ## Additional Notes
@@ -51,7 +52,6 @@ Given more time the app could be improved by:
 
 - Higher level tests, e.g. contract or full e2e.
 - Allow for processing of large transcripts, e.g. by using a more efficient search algorithm for finding the words in a clip.
-- Add authentication to the endpoints.
 - Swagger documentation for the endpoints (could be auto-generated from the TypeScript definitions).
 - Improved dev tooling, e.g. linting
 - Improved error handling for the API response (e.g. show appropriate messages depending on whether there is a user or server error)

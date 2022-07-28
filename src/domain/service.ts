@@ -21,8 +21,8 @@ export class Service {
   }
 
   /**
-   * Gets a partial conversation ("clip") from the transcript.
-   * Note: used a separate method here instead of overloading getConversation to be explicit about how to get a "clip", which is the business term 
+   * Gets a partial conversation (a set of clips) from the transcript.
+   * Note: used a separate method here instead of overloading getConversation to be explicit about how to get "clips", which is the business term 
    * @param videoUrl  The URL of the video
    * @param startTime The start time offset in seconds
    * @param endTime   The end time offset in seconds

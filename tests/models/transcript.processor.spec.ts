@@ -245,7 +245,7 @@ describe("get full conversation", () => {
   });
 });
 
-describe("get partial conversation", () => {
+describe("get clips", () => {
   test("when truncating the end", () => {
     const tp = new TranscriptProcessor({
       videoUrl: VIDEO_URL,
@@ -391,7 +391,7 @@ describe("get partial conversation", () => {
   });
 });
 
-describe("fails to get conversation", () => {
+describe("fails to get clips", () => {
   test("when start time is negative", () => {
     const tp = new TranscriptProcessor({
       videoUrl: VIDEO_URL,

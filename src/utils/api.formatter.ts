@@ -10,10 +10,10 @@ type ApiClip = {
 
 /**
  * Convert an array of clips into an array of api formatted clips
- * @param conversation 
+ * @param clips 
  */
-export function getFormattedClips(conversation: Clip[]): ApiClip[] {
-  return conversation.map((c: Clip) => ({
+export function getFormattedClips(clips: Clip[]): ApiClip[] {
+  return clips.map((c: Clip) => ({
     timestamp: toMinutesSeconds(c.startTime),
     range: `${toMinutesSeconds(c.startTime)}-${toMinutesSeconds(c.endTime)}`,
     speaker_name: c.speakerName,
