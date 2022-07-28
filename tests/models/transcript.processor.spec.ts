@@ -227,7 +227,7 @@ describe("get full conversation", () => {
     });
 
     expect(tp.getConversation()).toEqual([{
-      timestamp: "0:00.568",
+      timestamp: "0:00.57",
       speakerId: 0,
       speakerName: "Flavius",
       quote: "Hello world",
@@ -258,7 +258,7 @@ describe("get partial conversation", () => {
     });
 
     expect(tp.getConversation(0, 1.5)).toEqual([{
-      timestamp: "0:00.568",
+      timestamp: "0:00.57",
       speakerId: 0,
       speakerName: "Flavius",
       quote: "Hello",
