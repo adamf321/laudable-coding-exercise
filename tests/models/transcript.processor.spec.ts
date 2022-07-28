@@ -11,7 +11,7 @@ describe("get full conversation", () => {
       words: [],
     });
 
-    expect(tp.getConversation()).toEqual([]);
+    expect(tp.getClips()).toEqual([]);
   });
 
   test("for one word transcript", () => {
@@ -27,8 +27,9 @@ describe("get full conversation", () => {
       }],
     });
 
-    expect(tp.getConversation()).toEqual([{
-      timestamp: "0:00",
+    expect(tp.getClips()).toEqual([{
+      startTime: 0,
+      endTime: 1,
       speakerId: 0,
       speakerName: "Flavius",
       quote: "Hello",
@@ -48,8 +49,9 @@ describe("get full conversation", () => {
       }],
     });
 
-    expect(tp.getConversation()).toEqual([{
-      timestamp: "0:00",
+    expect(tp.getClips()).toEqual([{
+      startTime: 0,
+      endTime: 1,
       speakerId: 0,
       speakerName: "Flavius",
       quote: "Hello!",
@@ -77,8 +79,9 @@ describe("get full conversation", () => {
       ],
     });
 
-    expect(tp.getConversation()).toEqual([{
-      timestamp: "0:00",
+    expect(tp.getClips()).toEqual([{
+      startTime: 0,
+      endTime: 2,
       speakerId: 0,
       speakerName: "Flavius",
       quote: "Hello world",
@@ -109,15 +112,17 @@ describe("get full conversation", () => {
       ],
     });
 
-    expect(tp.getConversation()).toEqual([
+    expect(tp.getClips()).toEqual([
       {
-        timestamp: "0:00",
+        startTime: 0,
+        endTime: 1,
         speakerId: 0,
         speakerName: "Flavius",
         quote: "Hello",
       },
       {
-        timestamp: "0:01",
+        startTime: 1,
+        endTime: 2,
         speakerId: 1,
         speakerName: "Caecilius",
         quote: "world",
@@ -149,15 +154,17 @@ describe("get full conversation", () => {
       ],
     });
 
-    expect(tp.getConversation()).toEqual([
+    expect(tp.getClips()).toEqual([
       {
-        timestamp: "0:00",
+        startTime: 0,
+        endTime: 1,
         speakerId: 0,
         speakerName: "Flavius",
         quote: "Hello,",
       },
       {
-        timestamp: "0:01",
+        startTime: 1,
+        endTime: 2,
         speakerId: 1,
         speakerName: "Caecilius",
         quote: "world!",
@@ -189,15 +196,17 @@ describe("get full conversation", () => {
       ],
     });
 
-    expect(tp.getConversation()).toEqual([
+    expect(tp.getClips()).toEqual([
       {
-        timestamp: "0:00",
+        startTime: 0,
+        endTime: 1,
         speakerId: 0,
         speakerName: "Flavius",
         quote: "Hello,",
       },
       {
-        timestamp: "0:01",
+        startTime: 1,
+        endTime: 2,
         speakerId: 1,
         speakerName: "Caecilius",
         quote: "world!",
@@ -226,8 +235,9 @@ describe("get full conversation", () => {
       ],
     });
 
-    expect(tp.getConversation()).toEqual([{
-      timestamp: "0:00.57",
+    expect(tp.getClips()).toEqual([{
+      startTime: 0.568,
+      endTime: 2.4678,
       speakerId: 0,
       speakerName: "Flavius",
       quote: "Hello world",
@@ -257,8 +267,9 @@ describe("get partial conversation", () => {
       ],
     });
 
-    expect(tp.getConversation(0, 1.5)).toEqual([{
-      timestamp: "0:00.57",
+    expect(tp.getClips(0, 1.5)).toEqual([{
+      startTime: 0.568,
+      endTime: 1.67,
       speakerId: 0,
       speakerName: "Flavius",
       quote: "Hello",
@@ -286,8 +297,9 @@ describe("get partial conversation", () => {
       ],
     });
 
-    expect(tp.getConversation(1.7)).toEqual([{
-      timestamp: "0:01.8",
+    expect(tp.getClips(1.7)).toEqual([{
+      startTime: 1.8,
+      endTime: 2.4678,
       speakerId: 0,
       speakerName: "Flavius",
       quote: "world",
@@ -315,8 +327,9 @@ describe("get partial conversation", () => {
       ],
     });
 
-    expect(tp.getConversation(1)).toEqual([{
-      timestamp: "0:00.5",
+    expect(tp.getClips(1)).toEqual([{
+      startTime: 0.5,
+      endTime: 2.4678,
       speakerId: 0,
       speakerName: "Flavius",
       quote: "Hello world",
@@ -344,8 +357,9 @@ describe("get partial conversation", () => {
       ],
     });
 
-    expect(tp.getConversation(0, 2.4)).toEqual([{
-      timestamp: "0:00.5",
+    expect(tp.getClips(0, 2.4)).toEqual([{
+      startTime: 0.5,
+      endTime: 2.4678,
       speakerId: 0,
       speakerName: "Flavius",
       quote: "Hello world",
@@ -373,7 +387,7 @@ describe("get partial conversation", () => {
       ],
     });
 
-    expect(tp.getConversation(3, 5)).toEqual([]);
+    expect(tp.getClips(3, 5)).toEqual([]);
   });
 });
 
@@ -391,7 +405,7 @@ describe("fails to get conversation", () => {
       }],
     });
 
-    expect(() => tp.getConversation()).toThrow();
+    expect(() => tp.getClips()).toThrow();
   });
 
   test("when start time is after end time", () => {
@@ -407,7 +421,7 @@ describe("fails to get conversation", () => {
       }],
     });
 
-    expect(() => tp.getConversation()).toThrow();
+    expect(() => tp.getClips()).toThrow();
   });
 
   test("when speaker id not found", () => {
@@ -423,7 +437,7 @@ describe("fails to get conversation", () => {
       }],
     });
 
-    expect(() => tp.getConversation()).toThrow();
+    expect(() => tp.getClips()).toThrow();
   });
 
   test("when full text does not match word array", () => {
@@ -447,7 +461,7 @@ describe("fails to get conversation", () => {
       ],
     });
 
-    expect(() => tp.getConversation()).toThrow();
+    expect(() => tp.getClips()).toThrow();
   });
 
   test("when there are 2 spaces in the full text", () => {
@@ -471,6 +485,6 @@ describe("fails to get conversation", () => {
       ],
     });
 
-    expect(() => tp.getConversation()).toThrow();
+    expect(() => tp.getClips()).toThrow();
   });
 });

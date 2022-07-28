@@ -1,6 +1,6 @@
 import { TranscriptRepository } from "./repository.js";
 import { TranscriptProcessor } from "./transcript.processor.js";
-import { Conversation } from "./types.js";
+import { Clip } from "./types.js";
 
 /**
  * This service provides the entry point for consumers to interact with the domain.
@@ -10,14 +10,14 @@ export class Service {
    * Get a full conversation transcript
    * @param videoUrl The URL of the video
    */
-  getConversation(videoUrl: string): Conversation {
+  getConversation(videoUrl: string): Clip[] {
     const transcript = TranscriptRepository.getTranscript();
 
     if (transcript.videoUrl !== videoUrl) throw new Error(`Video url not found: ${videoUrl}`);
 
     const tp = new TranscriptProcessor(transcript);
 
-    return tp.getConversation();
+    return tp.getClips();
   }
 
   /**
@@ -28,13 +28,13 @@ export class Service {
    * @param endTime   The end time offset in seconds
    * @returns 
    */
-  getClip(videoUrl: string, startTime: number, endTime: number): Conversation {
+  getClips(videoUrl: string, startTime: number, endTime: number): Clip[] {
     const transcript = TranscriptRepository.getTranscript();
 
     if (transcript.videoUrl !== videoUrl) throw new Error(`Video url not found: ${videoUrl}`);
 
     const tp = new TranscriptProcessor(transcript);
 
-    return tp.getConversation(startTime, endTime);
+    return tp.getClips(startTime, endTime);
   }
 }

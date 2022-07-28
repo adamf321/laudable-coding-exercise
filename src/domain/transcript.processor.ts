@@ -1,5 +1,4 @@
-import { toMinutesSeconds } from "../utils/time.utils.js";
-import { Conversation, Transcript } from "./types.js";
+import { Clip, Transcript } from "./types.js";
 
 /**
  * Class to represent a transcript with methods that can be run on it
@@ -18,11 +17,11 @@ export class TranscriptProcessor {
    * @param start Start getting the conversation from this point (in seconds)
    * @param end   Stop getting the conversation beyond this point (in seconds)
    */
-  getConversation = (startTime: number = 0, endTime: number = Infinity): Conversation => {
+  getClips = (startTime: number = 0, endTime: number = Infinity): Clip[] => {
     // Sort the words by timestamp in case they are not already ordered (if we can assume they are then this step could be removed)
     const words = this.transcript.words.sort((a, b) => a.startTime - b.startTime);
 
-    const conversation: Conversation = [];
+    const clips: Clip[] = [];
 
     for (const [index, word] of words.entries()) {
       // Check for invalid words
@@ -34,15 +33,16 @@ export class TranscriptProcessor {
       // Exit the loop if the word starts after the endTime (all subsequent words will also start after the endTime)
       if (word.startTime > endTime) break;
 
-      const lastQuote = conversation.length ? conversation[conversation.length - 1] : null;
+      const lastQuote = clips.length ? clips[clips.length - 1] : null;
 
       if (!lastQuote || word.speaker !== lastQuote.speakerId) {
         const speaker = this.transcript.speakers.find(s => s.id === word.speaker);
 
         if (!speaker) throw new Error(`Speaker ${word.speaker} was not found in this transcript`)
 
-        conversation.push({
-          timestamp: toMinutesSeconds(word.startTime),
+        clips.push({
+          startTime:word.startTime,
+          endTime: word.endTime,
           speakerId: speaker.id,
           speakerName: speaker.name,
           quote: this.getWordWithPunctuation(index),
@@ -51,10 +51,11 @@ export class TranscriptProcessor {
         continue;
       }
 
-      conversation[conversation.length - 1].quote += ` ${this.getWordWithPunctuation(index)}`;
+      clips[clips.length - 1].quote += ` ${this.getWordWithPunctuation(index)}`;
+      clips[clips.length - 1].endTime = word.endTime;
     }
 
-    return conversation;
+    return clips;
   }
 
   /**

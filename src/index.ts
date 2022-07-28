@@ -1,5 +1,6 @@
 import express, { Express, Response, Request } from "express";
 import { Service } from "./domain/service.js";
+import { getFormattedClips } from "./utils/api.formatter.js";
 import { toMinutesSeconds } from "./utils/time.utils.js";
 
 const app: Express = express();
@@ -16,11 +17,11 @@ app.get("/conversation", (req: Request, res: Response) => {
   if (!videoUrl || typeof videoUrl !== "string") throw new Error("media_url is a required parameter");
 
   res.json({
-    conversation: service.getConversation(videoUrl),
+    conversation: getFormattedClips(service.getConversation(videoUrl)),
   });
 });
 
-app.get("/clip", (req: Request, res: Response) => {
+app.get("/clips", (req: Request, res: Response) => {
   const service = new Service();
 
   const videoUrl = req.query.media_url;
@@ -32,8 +33,7 @@ app.get("/clip", (req: Request, res: Response) => {
   if (!endTime || isNaN(endTime)) throw new Error("end_time is a required parameter");
 
   res.json({
-    range: `${toMinutesSeconds(startTime)}-${toMinutesSeconds(endTime)}`,
-    conversation: service.getClip(videoUrl, startTime, endTime),
+    clips: getFormattedClips(service.getClips(videoUrl, startTime, endTime)),
   });
 });
 
